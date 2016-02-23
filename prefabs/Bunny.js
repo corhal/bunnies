@@ -3,8 +3,8 @@ function Bunny() {
     
     var appearance = new Appearance('_assets/bunny.png', 0.5, 0.5)
     var transform = new Transform(
-            400, //Math.round(Math.random() * (800 - appearance.width)),
-            100, //Math.round(Math.random() * (600  - appearance.height)),
+            10, //Math.round(Math.random() * (800 - appearance.width)),
+            10, //Math.round(Math.random() * (600  - appearance.height)),
             0)
     console.log("Bunny: " + transform.position.x + ":" + transform.position.y);
     bunny

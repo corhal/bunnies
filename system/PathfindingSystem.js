@@ -1,8 +1,8 @@
 function PathfindingSystem(boardSystem) {
     this.boardSystem = boardSystem;
     this.destinationTile = this.boardSystem.getTileByAbsCoordinates(4, 7).getComponent(Tile);
-    console.log(boardSystem);
-    console.log(this.boardSystem);
+    //console.log(boardSystem);
+    //console.log(this.boardSystem);
     this.board = boardSystem.getEntities();
     this.matrix = [];
     for (var i = 0; i < this.board.length; i++) {
@@ -18,7 +18,7 @@ function PathfindingSystem(boardSystem) {
         }   
         this.matrix.push(matrixXarray);     
     }
-    console.log(this.matrix);
+    //console.log(this.matrix);
     
     window.addEventListener('mousedown', function (event) { 
         console.log(this.boardSystem.getTileByAbsCoordinates(event.clientX, event.clientY));  
@@ -39,22 +39,23 @@ PathfindingSystem.prototype.update = function (entities) {
     pathfinderEntities.forEach(this.updateEntity, this);
 } 
 
-PathfindingSystem.prototype.updateEntity = function (entity) { // почти научились ходить  
+PathfindingSystem.prototype.updateEntity = function (entity) { // почему-то при клике на тайл == startingPosition возвращается currentPosition  
     var pathfinder = entity.getComponent(Pathfinder);
     var transform = entity.getComponent(Transform);
     
-    if (pathfinder.currentPosition.x === -1) { // где-то здесь косяк, который переворачивает зайца
+    if (pathfinder.currentPosition.x === -1) {
         //console.log("Abs: " + pathfinder.startingPosition.x + ":" + pathfinder.startingPosition.y);
         pathfinder.startingPosition = this.boardSystem.getTileByAbsCoordinates(pathfinder.startingPosition.x, pathfinder.startingPosition.y).getComponent(Tile).position;
         //console.log(pathfinder.startingPosition.x + ":" + pathfinder.startingPosition.y);
         //console.log("old:" + pathfinder.currentPosition.x + ":" + pathfinder.currentPosition.y);
-        pathfinder.currentPosition = pathfinder.startingPosition;
+        pathfinder.currentPosition.x = pathfinder.startingPosition.x;
+        pathfinder.currentPosition.y = pathfinder.startingPosition.y;
         //console.log("new:" + pathfinder.currentPosition.x + ":" + pathfinder.currentPosition.y);
         var currentTile = this.board[pathfinder.currentPosition.y][pathfinder.currentPosition.x]; // why?
         var tileTransform = currentTile.getComponent(Transform);  
         var tileTile = currentTile.getComponent(Tile); 
-        console.log("CurrentTile: " + tileTile.position.x + ":" + tileTile.position.y);
-        console.log("CurrentTileTransform: " + tileTransform.position.x + ":" + tileTransform.position.y);         
+        //console.log("CurrentTile: " + tileTile.position.x + ":" + tileTile.position.y);
+        //console.log("CurrentTileTransform: " + tileTransform.position.x + ":" + tileTransform.position.y);         
         transform.position.x = tileTransform.position.x;
         transform.position.y = tileTransform.position.y;
     }
@@ -70,16 +71,17 @@ PathfindingSystem.prototype.updateEntity = function (entity) { // почти н�
         var grid = new PF.Grid(this.matrix);  
         var finder = new PF.AStarFinder();    
         var path = finder.findPath(pathfinder.currentPosition.x, pathfinder.currentPosition.y, pathfinder.destinationPosition.x, pathfinder.destinationPosition.y, grid);
-        console.log(path);
+        //console.log(path);
     
         if (path.length > 1) {
+            console.log(pathfinder.startingPosition.x + ":" + pathfinder.startingPosition.y);
             pathfinder.currentPosition.x = path[1][0];
             pathfinder.currentPosition.y = path[1][1];
             currentTile = this.board[pathfinder.currentPosition.y][pathfinder.currentPosition.x]; // whyyyy?
             tileTransform = currentTile.getComponent(Transform);
             tileTile = currentTile.getComponent(Tile); 
-            console.log("CurrentTile: " + tileTile.position.x + ":" + tileTile.position.y);
-            console.log("CurrentTileTransform: " + tileTransform.position.x + ":" + tileTransform.position.y);
+            //console.log("CurrentTile: " + tileTile.position.x + ":" + tileTile.position.y);
+            //console.log("CurrentTileTransform: " + tileTransform.position.x + ":" + tileTransform.position.y);
             transform.position.x = tileTransform.position.x;
             transform.position.y = tileTransform.position.y;
         }

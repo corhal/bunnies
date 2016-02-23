@@ -7,8 +7,8 @@ function BoardSystem(maxX, maxY) {
         var xArray = [];
         for (var j = 0; j < maxX; j++) {
             var newTile = new TilePrefab(j, i);
-            console.log("NewTile: " + newTile.getComponent(Tile).position.x + ":" + newTile.getComponent(Tile).position.y);
-            console.log("NewTileTransform: " + newTile.getComponent(Transform).position.x + ":" + newTile.getComponent(Transform).position.y);
+            //console.log("NewTile: " + newTile.getComponent(Tile).position.x + ":" + newTile.getComponent(Tile).position.y);
+            //console.log("NewTileTransform: " + newTile.getComponent(Transform).position.x + ":" + newTile.getComponent(Transform).position.y);
             xArray.push(newTile);          
         }        
         this.tiles.push(xArray);
@@ -36,13 +36,13 @@ BoardSystem.prototype.getTileByAbsCoordinates = function (x, y) {
             var check = hasXcollision && hasYcollision;
             return (check);
         })   
-        console.log(tileWeNeed);
+        //console.log(tileWeNeed);
         var anotherCheck = tileWeNeed.length > 0        
         if (anotherCheck) {
             tileToReturn = tileWeNeed[0];
         }        
     })
-    console.log(tileToReturn); 
+    //console.log(tileToReturn); 
     return tileToReturn;
 }
 
