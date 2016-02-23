@@ -7,7 +7,7 @@ import Tile from '../components/Tile';
 
 export default function TilePrefab(x, y) {
   const coinToss = Math.random();
-  const walkable = coinToss > -1;
+  const walkable = coinToss > 0.2;
   const sprite = (walkable) ? 'assets/tileWalkable.png' : 'assets/tileUnwalkable.png';
   const appearance = new Appearance(sprite, { x: 0.5, y: 0.5 });
   const tile = new Entity();
