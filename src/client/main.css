@@ -1,0 +1,12 @@
+p {
+  color: blue;
+}
+
+div p {
+  color: red;
+}
+
+p.name {
+  color: #f0f;
+}
+
