@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 function Bunny() {
     var bunny = new Entity();
     
@@ -21,6 +22,8 @@ function Bunny() {
     return bunny;
 } 
 =======
+=======
+>>>>>>> 224ede177440a270605f2b79011d28137d99c655
 'use strict';
 
 import Entity from '../Entity';
@@ -55,5 +58,8 @@ export default function Bunny() {
 
   return bunny;
 }
+<<<<<<< HEAD
+>>>>>>> 224ede177440a270605f2b79011d28137d99c655
+=======
 >>>>>>> 224ede177440a270605f2b79011d28137d99c655
 
