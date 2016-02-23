@@ -1,75 +1,84 @@
-function RenderSystem(width, height, backgroundColor) {
-  var renderer = PIXI.autoDetectRenderer(width, height, {backgroundColor : backgroundColor});
-  document.body.appendChild(renderer.view);
+'use strict';
 
-  this.stage = new PIXI.Container();
-  this.objects = {};
+import Appearance from '../components/Appearance';
+import Transform from '../components/Transform';
 
-  var self = this;
+export default class RenderSystem {
+  constructor(width, height, backgroundColor) {
+    this.renderer = PIXI.autoDetectRenderer(
+      width,
+      height,
+      { backgroundColor: backgroundColor }
+    );
+    document.body.appendChild(this.renderer.view);
 
-  animate();
-  function animate() {
-    requestAnimationFrame(animate);
-    renderer.render(self.stage);
+    this.stage = new PIXI.Container();
+    this.objects = {};
+
+    this.animate();
   }
-}
 
-RenderSystem.prototype.removeEntitiesByIds = function (ids) {
-  ids.forEach(function (id) {
-    this.stage.removeChild(this.objects[id]);
-    delete this.objects[id];
-  }, this);
-}
+  animate() {
+    requestAnimationFrame(this.animate.bind(this));
+    this.renderer.render(this.stage);
+  }
 
-RenderSystem.prototype.addEntity = function (entity) {
-  var appearance = entity.getComponent(Appearance);
-  var object = appearance.object;
-
-  this.objects[entity.id] = object;
-
-  this.stage.addChild(object);
-}
-
-RenderSystem.prototype.updateEntity = function (entity) {
-  var transform = entity.getComponent(Transform);
-  var object = this.objects[entity.id];
-
-  object.position.x = transform.position.x;
-  object.position.y = transform.position.y;
-  object.rotation = transform.angle * Math.PI / 180;
-}
-
-/**
- * @TODO:
- * Read it!
- * Array.prototype.filter | more or less
- * Array.prototype.some | eh
- * Array.prototype.map | what
- * Array.prototype.reduce | what
- * Array.prototype.forEach + context (2nd argument) | yeah
- * Function.prototype.bind | what
- * Object.keys | eh
- */
-RenderSystem.prototype.update = function (entities) {
-  var renderEntities = entities.filter(function (el) {
-    return el.hasComponent(Appearance);
-  });
-  var oldIds = Object.keys(this.objects).map(function (id) {
-    return parseInt(id);
-  });
-  var removeIds = oldIds.filter(function (id) {
-    return !renderEntities.some(function (el) {
-      return el.id === id;
+  removeEntitiesByIds(ids) {
+    ids.forEach((id) => {
+      this.stage.removeChild(this.objects[id]);
+      delete this.objects[id];
     });
-  });
-  var addEntities = renderEntities.filter(function (el) {
-    return oldIds.indexOf(el.id) === -1;
-  });
+  }
 
-  //addEntities.forEach(this.addEntity, this);
-  addEntities.forEach(this.addEntity, this);
+  addEntity(entity) {
+    const appearance = entity.getComponent(Appearance);
+    const object = appearance.object;
 
-  this.removeEntitiesByIds(removeIds);
+    this.objects[entity.id] = object;
 
-  renderEntities.forEach(this.updateEntity, this);
+    this.stage.addChild(object);
+  }
+
+  updateEntity(entity) {
+    const transform = entity.getComponent(Transform);
+    const object = this.objects[entity.id];
+
+    object.position.x = transform.position.x;
+    object.position.y = transform.position.y;
+    object.rotation = transform.angle * Math.PI / 180;
+  }
+
+  /**
+   * @TODO:
+   * Read it!
+   * Array.prototype.filter | more or less
+   * Array.prototype.some | eh
+   * Array.prototype.map | what
+   * Array.prototype.reduce | what
+   * Array.prototype.forEach + context (2nd argument) | yeah
+   * Function.prototype.bind | what
+   * Object.keys | eh
+   */
+  update(entities) {
+    const renderEntities = entities.filter((el) => {
+      return el.hasComponent(Appearance);
+    });
+    const oldIds = Object.keys(this.objects).map((id) => {
+      return parseInt(id, 10);
+    });
+    const removeIds = oldIds.filter((id) => {
+      return !renderEntities.some((el) => {
+        return el.id === id;
+      });
+    });
+    const addEntities = renderEntities.filter((el) => {
+      return oldIds.indexOf(el.id) === -1;
+    });
+
+    addEntities.forEach(this.addEntity, this);
+
+    this.removeEntitiesByIds(removeIds);
+
+    renderEntities.forEach(this.updateEntity, this);
+  }
 }

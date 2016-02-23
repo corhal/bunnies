@@ -1,53 +1,75 @@
-function BoardSystem(maxX, maxY) {
-  this.tiles = [];
+'use strict';
 
-  var self = this;
+import TilePrefab from '../prefabs/TilePrefab';
+import Transform from '../components/Transform';
+import Appearance from '../components/Appearance';
 
-  for (var i = 0; i < maxY; i++) {
-    var xArray = [];
-    for (var j = 0; j < maxX; j++) {
-      var newTile = new TilePrefab(j, i);
-      console.log("NewTile: " + newTile.getComponent(Tile).position.x + ":" + newTile.getComponent(Tile).position.y);
-      console.log("NewTileTransform: " + newTile.getComponent(Transform).position.x + ":" + newTile.getComponent(Transform).position.y);
-      xArray.push(newTile);
+/**
+ * @TODO: Эта система что-то делает
+ * @class BoardSystem
+ */
+export default class BoardSystem {
+  /**
+   * @param {number} width  ширина поля
+   * @param {number} height высота поля
+   * @constructor
+   */
+  constructor(width, height) {
+    this.tiles = [];
+
+    for (let i = 0; i < height; i++) {
+      const xArray = [];
+
+      for (let j = 0; j < width; j++) {
+        const newTile = new TilePrefab(j, i);
+
+        xArray.push(newTile);
+      }
+
+      this.tiles.push(xArray);
     }
-    this.tiles.push(xArray);
   }
-  //console.log(this.tiles);
-}
 
-BoardSystem.prototype.getEntities = function() {
-  return this.tiles;
-}
+  // this.getEntities() === this.tiles;
+  getEntities() {
+    return this.tiles;
+  }
 
-BoardSystem.prototype.update = function (entities) {
+  // this.entities === this.tiles;
+  get entities() {
+    return this.tiles;
+  }
 
-}
+  update() {
 
-BoardSystem.prototype.getTileByAbsCoordinates = function (x, y) {
-  var tilesArray = this.tiles;
-  var tileToReturn;
-  tilesArray.forEach(function (tileRow) {
-    var tileWeNeed = tileRow.filter(function(tile){
-      var tileTransformPosition = tile.getComponent(Transform).position;
-      var tileAppearance = tile.getComponent(Appearance);
-      var hasXcollision = x >= tileTransformPosition.x - tileAppearance.width / 2 && x <= (tileTransformPosition.x + tileAppearance.width / 2);
-      var hasYcollision = y >= tileTransformPosition.y - tileAppearance.height / 2 && y <= (tileTransformPosition.y + tileAppearance.height / 2);
-      var check = hasXcollision && hasYcollision;
+  }
 
-      return check;
+  /**
+   * @method
+   * @param {number} x
+   * @param {number} y
+   * @return {TilePrefab}
+   */
+  getTileByAbsCoordinates(x, y) {
+    let result;
+
+    this.tiles.forEach(function iterateTileRows(tileRow) {
+      const tileWeNeed = tileRow.filter(function findTile(tile) {
+        const position = tile.getComponent(Transform).position;
+        const appearance = tile.getComponent(Appearance);
+        const xCollision = x >= position.x - appearance.width / 2 && x <= (position.x + appearance.width / 2);
+        const yCollision = y >= position.y - appearance.height / 2 && y <= (position.y + appearance.height / 2);
+
+        return xCollision && yCollision;
+      });
+
+      const anotherCheck = tileWeNeed.length > 0;
+
+      if (anotherCheck) {
+        result = tileWeNeed[0];
+      }
     });
-    var anotherCheck = tileWeNeed.length > 0;
 
-    console.log(tileWeNeed);
-
-    if (anotherCheck) {
-      tileToReturn = tileWeNeed[0];
-    }
-  });
-
-  console.log(tileToReturn);
-
-  return tileToReturn;
+    return result;
+  }
 }
-

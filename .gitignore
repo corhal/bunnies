@@ -5,3 +5,7 @@
 node_modules
 *.log
 *.gz
+
+# project
+src/client/bundle.js
+src/client/bundle.js.map
