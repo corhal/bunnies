@@ -63,7 +63,7 @@ PathfindingSystem.prototype.updateEntity = function (entity) { // почему-�
     pathfinder.destinationPosition = this.destinationTile.position;
     
     pathfinder.destinationPosition.x = this.destinationTile.position.x;
-    pathfinder.destinationPosition.y = this.destinationTile.position.y;
+    pathfinder.destinationPosition.y = this.destinationTile.position.y; // For test commit
     
     //console.log(pathfinder.destinationPosition);
     
