@@ -5,16 +5,21 @@ import Appearance from '../components/Appearance';
 import Transform from '../components/Transform';
 import Edible from '../components/Edible';
 import Collider from '../components/Collider';
+import Tile from '../components/Tile';
+import engine from '../engine';
 
 export default function Carrot() {
   const appearance = new Appearance('assets/carrot.png', { x: 0.5, y: 0.5 });
   const carrot = new Entity();
 
-  let x = Math.round(Math.random() * (800 - appearance.width));
-  let y = Math.round(Math.random() * (600 - appearance.height));
+  const availableTiles = engine.entities.filter((entity) => {
+    const tile = entity.getComponent(Tile);
+    return !!tile && tile.walkable;
+  });
+  const targetTilePosition = availableTiles[Math.round((availableTiles.length - 1) * Math.random())].getComponent(Transform).position;
 
-  x = x - x % 64 + 32;
-  y = y - y % 64 + 32;
+  const x = targetTilePosition.x;
+  const y = targetTilePosition.y;
 
   carrot
     .addComponent(appearance)
