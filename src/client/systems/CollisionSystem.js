@@ -1,34 +1,41 @@
-function CollisionSystem() {
+'use strict';
 
-}
+import engine from '../engine';
+import Collider from '../components/Collider';
+import Transform from '../components/Transform';
+import Hunger from '../components/Hunger';
+import Edible from '../components/Edible';
+import Health from '../components/Health';
 
-CollisionSystem.prototype.update = function (entities) {
-  var colliderEntities = entities.filter(function (el) {
-    return el.hasComponent(Collider);
-  });
+export default class CollisionSystem {
+  update(entities) {
+    const colliderEntities = entities.filter((el) => {
+      return el.hasComponent(Collider);
+    });
 
-  var bunny = colliderEntities.filter(function (entity) {
-    return entity.hasComponent(Hunger);
-  })[0];
+    const bunny = colliderEntities.filter((entity) => {
+      return entity.hasComponent(Hunger);
+    })[0];
 
-  var bunnyPosition = bunny.getComponent(Transform).position;
-  var bunnyHealth = bunny.getComponent(Health);
+    const bunnyPosition = bunny.getComponent(Transform).position;
+    const bunnyHealth = bunny.getComponent(Health);
 
-  var food = colliderEntities.filter(function (entity) {
-    return entity.hasComponent(Edible);
-  });
+    const food = colliderEntities.filter((entity) => {
+      return entity.hasComponent(Edible);
+    });
 
-  food.forEach(function collisionHandler(entity) {
-    var entityPosition = entity.getComponent(Transform).position;
-    var entityCollider = entity.getComponent(Collider);
-    //var entityAppearance = entity.getComponent(Appearance);
-    var edible = entity.getComponent(Edible);
-    var hasXcollision = bunnyPosition.x >= entityPosition.x - entityCollider.width / 2 && bunnyPosition.x <= (entityPosition.x + entityCollider.width / 2);
-    var hasYcollision = bunnyPosition.y >= entityPosition.y - entityCollider.width / 2 && bunnyPosition.y <= (entityPosition.y + entityCollider.height / 2);
+    food.forEach(function collisionHandler(entity) {
+      const entityPosition = entity.getComponent(Transform).position;
+      const entityCollider = entity.getComponent(Collider);
+      // var entityAppearance = entity.getComponent(Appearance);
+      const edible = entity.getComponent(Edible);
+      const xCollision = bunnyPosition.x >= entityPosition.x - entityCollider.width / 2 && bunnyPosition.x <= (entityPosition.x + entityCollider.width / 2);
+      const yCollision = bunnyPosition.y >= entityPosition.y - entityCollider.width / 2 && bunnyPosition.y <= (entityPosition.y + entityCollider.height / 2);
 
-    if (hasXcollision && hasYcollision) {
-      bunnyHealth.currentHealth = Math.min(bunnyHealth.maxHealth, bunnyHealth.currentHealth + edible.hpToRestore);
-      engine.removeEntity(entity);
-    }
-  });
+      if (xCollision && yCollision) {
+        bunnyHealth.currentHealth = Math.min(bunnyHealth.maxHealth, bunnyHealth.currentHealth + edible.hpToRestore);
+        engine.removeEntity(entity);
+      }
+    });
+  }
 }

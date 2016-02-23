@@ -1,30 +1,32 @@
-var engine = {
+const engine = {
   entities: [],
   systems: [],
 
-  addEntity: function (entity) {
+  addEntity(entity) {
     this.entities.push(entity);
   },
 
-  removeEntity: function (entity) {
-    this.entities = this.entities.filter(function (el) {
+  removeEntity(entity) {
+    this.entities = this.entities.filter((el) => {
       return el.id !== entity.id;
     });
   },
 
-  registerSystem: function (system) {
+  registerSystem(system) {
     this.systems.push(system);
   },
 
-  update: function () {
-    this.systems.forEach(function (system) {
+  update() {
+    this.systems.forEach((system) => {
       system.update(this.entities);
-    }, this);
+    });
 
     requestAnimationFrame(this.update.bind(this));
   },
 
-  init: function () {
+  init() {
     this.update();
   }
 };
+
+export default engine;

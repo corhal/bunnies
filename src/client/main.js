@@ -1,42 +1,54 @@
-/* global RenderSystem, PIXI, BoardSystem, ControlSystem, HungerSystem, CollisionSystem, engine, PathfindingSystem, Bunny, Tile, Carrot */
-var xMax = 800;
-var yMax = 600;
-var render = new RenderSystem(xMax, yMax, 0x1099bb);
+'use strict';
 
-var assetsToLoad = [ 'assets/bunny.png', 'assets/carrot.png', 'assets/tileWalkable.png', 'assets/tileUnwalkable.png'];
-var loader = PIXI.loader;
+import Canvas from './constants/canvas';
+import RenderSystem from './systems/RenderSystem';
+import BoardSystem from './systems/BoardSystem';
+import ControlSystem from './systems/ControlSystem';
+import HungerSystem from './systems/HungerSystem';
+import CollisionSystem from './systems/CollisionSystem';
+import PathfindingSystem from './systems/PathfindingSystem';
+import Tile from './components/Tile';
+import Bunny from './prefabs/Bunny';
+import Carrot from './prefabs/Carrot';
+import engine from './engine';
+
+const assetsToLoad = [ 'assets/bunny.png', 'assets/carrot.png', 'assets/tileWalkable.png', 'assets/tileUnwalkable.png'];
+
+const render = new RenderSystem(Canvas.Width, Canvas.Height, Canvas.BackgroundColor);
+const loader = PIXI.loader;
 
 loader.add(assetsToLoad);
-
 loader.once('complete', onAssetsLoaded);
-
 loader.load();
 
 function onAssetsLoaded() {
-  var board = new BoardSystem(12, 9);
+  const board = new BoardSystem(12, 9);
 
   engine.init();
   engine.registerSystem(render);
   engine.registerSystem(board);
 
-  var boardMatrix = board.getEntities();
+  const boardMatrix = board.getEntities();
 
-  for (var i = 0; i < boardMatrix.length; i++) {
-    var xArray = boardMatrix[i];
-    for (var j = 0; j < xArray.length; j++) {
+  for (let i = 0; i < boardMatrix.length; i++) {
+    const xArray = boardMatrix[i];
+
+    for (let j = 0; j < xArray.length; j++) {
       engine.addEntity(xArray[j]);
     }
   }
-  var pathfinding = new PathfindingSystem(board);
+
+  const pathfinding = new PathfindingSystem(board);
+
   engine.registerSystem(pathfinding);
   engine.registerSystem(new ControlSystem(0, 0, 800, 600));
   engine.registerSystem(new HungerSystem());
   engine.registerSystem(new CollisionSystem());
 
-  var carl = new Bunny();
+  const carl = new Bunny();
   engine.addEntity(carl);
 
-  var tile = board.getTileByAbsCoordinates(400, 100);
+  const tile = board.getTileByAbsCoordinates(400, 100);
   console.log('Tile: ' + tile.getComponent(Tile).position.x + ':' + tile.getComponent(Tile).position.y);
 
   window.setInterval(function addCarrot() {
