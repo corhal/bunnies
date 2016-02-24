@@ -28,7 +28,7 @@ function onAssetsLoaded() {
   engine.registerSystem(render);
   engine.registerSystem(board);
 
-  const boardMatrix = board.getEntities();
+  const boardMatrix = board.tiles;
 
   for (let i = 0; i < boardMatrix.length; i++) {
     const xArray = boardMatrix[i];

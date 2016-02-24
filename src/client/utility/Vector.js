@@ -5,7 +5,7 @@ export default class Vector {
   }
 
   get radAngle() {
-    return Math.aran(this.y / this.x);
+    return Math.atan(this.y / this.x);
   }
 
   get angle() {

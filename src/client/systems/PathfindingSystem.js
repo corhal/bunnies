@@ -10,7 +10,7 @@ export default class PathfindingSystem {
     this.destinationTile = this.boardSystem.getTileByAbsCoordinates(4, 7).getComponent(Tile);
     console.log(boardSystem);
     console.log(this.boardSystem);
-    this.board = boardSystem.getEntities();
+    this.board = boardSystem.tiles;
     this.matrix = [];
 
     for (let i = 0; i < this.board.length; i++) {
