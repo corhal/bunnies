@@ -40,8 +40,9 @@ export default class ControlSystem {
     }
 
     if (move) {
-      dx = movement.speed * Math.sin(transform.angleInRad);
-      dy = -movement.speed * Math.cos(transform.angleInRad);
+      movement.angle = transform.angleInRad;
+      dx = movement.dx; // speed * Math.sin(transform.angleInRad);
+      dy = -movement.dy; // speed * Math.cos(transform.angleInRad);
 
       const checkBoundaries = transform.position.x + dx > this.xMin && transform.position.x + dx < this.xMax
           && transform.position.y + dy > this.yMin && transform.position.y + dy < this.yMax;

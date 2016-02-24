@@ -22,7 +22,7 @@ export default function Bunny() {
   console.log('Bunny: ' + transform.position.x + ':' + transform.position.y);
   bunny
     .addComponent(appearance)
-    .addComponent(new Movement(3, 0.1))
+    .addComponent(new Movement(3, 0, 0.1))
     .addComponent(transform)
     .addComponent(new Control(37, 38, 39, 40))
     .addComponent(new Health(9999999))
