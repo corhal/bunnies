@@ -44,4 +44,3 @@ export default class Entity {
 }
 
 Entity.id = 1;
-

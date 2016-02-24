@@ -55,7 +55,8 @@ export default class PathfindingSystem {
       pathfinder.startingPosition = this.boardSystem.getTileByAbsCoordinates(pathfinder.startingPosition.x, pathfinder.startingPosition.y).getComponent(Tile).position;
       // console.log(pathfinder.startingPosition.x + ":" + pathfinder.startingPosition.y);
       // console.log("old:" + pathfinder.currentPosition.x + ":" + pathfinder.currentPosition.y);
-      pathfinder.currentPosition = pathfinder.startingPosition;
+      pathfinder.currentPosition.x = pathfinder.startingPosition.x;
+      pathfinder.currentPosition.y = pathfinder.startingPosition.y;
       // console.log("new:" + pathfinder.currentPosition.x + ":" + pathfinder.currentPosition.y);
       const currentTile = this.board[pathfinder.currentPosition.y][pathfinder.currentPosition.x]; // why?
       const tileTransform = currentTile.getComponent(Transform);
