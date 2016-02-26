@@ -16,10 +16,9 @@ export default function Bunny() {
     400, // Math.round(Math.random() * (800 - appearance.width)),
     100, // Math.round(Math.random() * (600  - appearance.height)),
     0
-  );
+    );
   const bunny = new Entity();
 
-  console.log('Bunny: ' + transform.position.x + ':' + transform.position.y);
   bunny
     .addComponent(appearance)
     .addComponent(new Movement(3, 0, 0.1))

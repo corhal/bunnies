@@ -14,7 +14,7 @@ export default class Appearance {
   /**
    * @memberof Appearance
    * @param {string} sprite путь к спрайту или картинке, в которой содержится отображение объкта
-   * @param {Pont} центр трансформации объекта
+   * @param {Point} центр трансформации объекта
    * @constructor
    */
   constructor(sprite, anchor) {

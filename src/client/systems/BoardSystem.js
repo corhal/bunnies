@@ -1,8 +1,6 @@
 'use strict';
 
 import TilePrefab from '../prefabs/TilePrefab';
-import Transform from '../components/Transform';
-import Appearance from '../components/Appearance';
 
 /**
  * @TODO: Эта система что-то делает
@@ -29,7 +27,7 @@ export default class BoardSystem {
       this.tiles.push(xArray);
     }
   }
-  
+
   update() {
 
   }
@@ -39,14 +37,12 @@ export default class BoardSystem {
    * @param {number} x
    * @param {number} y
    * @return {TilePrefab}
-   */ 
+   */
   getTileByAbsCoordinates(x, y) {
-    let result;
-
     const xFloored = Math.floor(x / 64);
     const yFloored = Math.floor(y / 64);
-    
-    result = this.tiles[yFloored][xFloored];
+
+    const result = this.tiles[yFloored][xFloored];
 
     return result;
   }

@@ -1,16 +1,11 @@
 'use strict';
 
 import Control from '../components/Control';
-import Transform from '../components/Transform';
 import Movement from '../components/Movement';
 
 export default class ControlSystem {
-  constructor(xMin, yMin, xMax, yMax) {
+  constructor() {
     this.state = {};
-    this.xMin = xMin;
-    this.yMin = yMin;
-    this.xMax = xMax;
-    this.yMax = yMax;
 
     window.addEventListener('keydown', (event) => {
       this.state[event.keyCode] = true;
@@ -23,34 +18,27 @@ export default class ControlSystem {
 
   updateEntity(entity) {
     const control = entity.getComponent(Control);
-    const transform = entity.getComponent(Transform);
     const movement = entity.getComponent(Movement);
     const rotateLeft = this.state[control.left];
     const rotateRight = this.state[control.right];
     const move = this.state[control.up];
-    let dx = 0;
-    let dy = 0;
 
-    if (rotateLeft) {
-      transform.angle -= movement.rotation / (Math.PI / 180);
-    }
-
-    if (rotateRight) {
-      transform.angle += movement.rotation / (Math.PI / 180);
+    if (rotateLeft || rotateRight) {
+      if (rotateLeft) {
+        movement.rotation = -movement.absRotation;
+      }
+      if (rotateRight) {
+        movement.rotation = movement.absRotation;
+      }
+      movement.shouldRotate = true;
+    } else {
+      movement.shouldRotate = false;
     }
 
     if (move) {
-      movement.angle = transform.angleInRad;
-      dx = movement.dx; // speed * Math.sin(transform.angleInRad);
-      dy = -movement.dy; // speed * Math.cos(transform.angleInRad);
-
-      const checkBoundaries = transform.position.x + dx > this.xMin && transform.position.x + dx < this.xMax
-          && transform.position.y + dy > this.yMin && transform.position.y + dy < this.yMax;
-
-      if (checkBoundaries) {
-        transform.position.x += dx;
-        transform.position.y += dy;
-      }
+      movement.shouldMove = true;
+    } else {
+      movement.shouldMove = false;
     }
   }
 

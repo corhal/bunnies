@@ -7,7 +7,7 @@ import ControlSystem from './systems/ControlSystem';
 import HungerSystem from './systems/HungerSystem';
 import CollisionSystem from './systems/CollisionSystem';
 import PathfindingSystem from './systems/PathfindingSystem';
-import Tile from './components/Tile';
+import MovementSystem from './systems/MovementSystem';
 import Bunny from './prefabs/Bunny';
 import Carrot from './prefabs/Carrot';
 import engine from './engine';
@@ -41,15 +41,13 @@ function onAssetsLoaded() {
   const pathfinding = new PathfindingSystem(board);
 
   engine.registerSystem(pathfinding);
-  engine.registerSystem(new ControlSystem(0, 0, 800, 600));
+  engine.registerSystem(new ControlSystem());
   engine.registerSystem(new HungerSystem());
   engine.registerSystem(new CollisionSystem());
+  engine.registerSystem(new MovementSystem(0, 0, Canvas.Width, Canvas.Height));
 
   const carl = new Bunny();
   engine.addEntity(carl);
-
-  const tile = board.getTileByAbsCoordinates(400, 100);
-  console.log('Tile: ' + tile.getComponent(Tile).position.x + ':' + tile.getComponent(Tile).position.y);
 
   window.setInterval(function addCarrot() {
     if (Math.random() > 0.5) {
